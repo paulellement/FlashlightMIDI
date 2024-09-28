@@ -7,6 +7,7 @@ Below are selected parts from the report submitted with the project.
 
 ## Introduction
 Theremins work by measuring the capacitance between two antennas and a musician’s hands. The distance between an antenna and a hand determines the pitch or loudness (depending on which antenna/hand) of the generated sound. Recreating a simple one would make for an interesting but time-consuming and potentially expensive project, requiring sensors and other hardware I do not have.
+
 Instead, a MIDI controller was programmed in Python using my laptop’s webcam and a flashlight as input. The location of the light on the image frame determines the pitch and loudness by mapping the light’s x and y coordinates to note-number and volume respectively. A MIDI message is thereby generated and sent to a synthesizer in a digital audio workstation through a virtual MIDI port. If the light is off, a threshold brightness is not met and no note-on MIDI message is generated.
 
 ## Methodology
@@ -39,10 +40,12 @@ would make it easier to play some melodies but also restrict the possible melodi
 There were two major changes made throughout the development of this program. 
 The first was the addition of the Gaussian blur, which was added to fix a problem caused by unpredictable bright reflections in the frame. 
 The second was mapping the y-coordinate to channel volume instead of note velocity.
+
 If a reflection and the flashlight both have at least one pixel with the maximum value (255), then the program might choose the location of the reflection instead of the flashlight when generating the note-on message. 
 This bug caused unintended notes to be played. The fix was to apply a Gaussian blur to the image, which is the convolution of a Gaussian function applied to the image. 
-Put simply, a pixel’s updated (post-blur) pixel brightness is based on the brightness of the pixels around it, which results in a blurring effect. The flashlight is a relatively large bright circle on the screen, so pixels in the center of it retain their brightness after the blur. 
+Put simply, a pixel’s updated (post-blur) pixel brightness is based on the average brightness of the pixels around it, which results in a blurring effect. The flashlight is a relatively large bright circle on the screen, so pixels in the center of it retain their brightness after the blur. 
 A reflection is a relatively small blemish on the screen, so its pixels decrease in brightness after the blur due to nearby pixels being darker. After this correction, the brightest pixel is much more likely to correspond to the flashlight’s location, as intended.
+
 Originally, the program generated a note-on message about every 0.1s (that is, the time the program takes to execute the loop plus an intentional wait-time of 0.1s). This limited the possible melodies by forcing each note to be the same duration. 
 Even if the flashlight was held in the same location for a moment, the corresponding note would be repeated every 0.1s. So, the program was changed to only generate a note-on message if there was a new note played. Consequently, the only way to play the same note in a row is to turn off and on the flashlight, which must take up 2 loops (one to turn off the note and one to turn it back on) or about 0.2s. 
 With this feature, if a note was held, moving the flashlight up and down would not change the velocity until a new note was triggered. For a piano or guitar this is realistic, but for a synth generating 3 sine waves (the instrument of choice) this is a setback. 
