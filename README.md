@@ -29,10 +29,14 @@ and the note has changed. Then, keep track of the new note (for steps 6 and 7).
 ## Things to Note About the Project
 ● There are 24 possible note number mappings, each a semitone apart, ranging from 60
 (middle C) to 83.
+
 ● There are 27 (128) possible channel volume mappings
+
 ● The instrument is monophonic.
+
 ● It is also possible to restrict the note mappings to a certain scale (like a harmonica). This
 would make it easier to play some melodies but also restrict the possible melodies.
+
 ● The frame is displayed to help the musician keep the flashlight within the frame.
 
 ## Discussion
@@ -53,12 +57,19 @@ With this in mind, the code was changed to map the y-coordinate to channel volum
 
 ### Instrument Limitations
 ● The instrument requires a dim room to function. If there are any lights in the background or if the room is bright enough, unintended pixels can be mistakenly chosen as the brightest (e.g., the classroom light’s reflection on the whiteboard when the lights were on during my presentation)
+
 ● The flashlight takes up more than one pixel. Consequently, the choice of the brightest pixel is ambiguous (i.e., anywhere within the area taken up by the light might be chosen).
+
   ○ This issue was masked by having wider subdivisions of the frame, sacrificing a wider range of notes.
+ 
   ○ When the flashlight is pointed directly at the camera, the area taken up by the flashlight is large and so one of a few possible notes are chosen. This can be avoided by pointing the flashlight at an angle, not directly at the camera.
+
 ● As a consequence of mapping the horizontal position of the light to note number, the possible notes are restricted to the notes of a piano. That is, all adjacent notes are a semitone apart, so vibrato/bending is not possible.
+
   ○ Implementing vibrato might involve first mapping to a note as before, then mapping to a pitch bend. The frame would still be divided into 24 semitones, but each semitone would be subdivided into 27 (or less) values of pitch bend.
+
 ● Recording MIDI input in FL Studio with the loopMIDI virtual port malfunctions. This is a glitch that I can’t figure out how to fix. So, the instrument must be used live.
+
 ● When intending to play two non-adjacent notes back to back, it is very difficult to avoid playing notes in between them. The solutions are either to move the flashlight fast enough for the notes in between to not be registered, or to turn off the flashlight, move it to the desired location, then turn it back on.
 
 In addition to these limitations, there are also some inefficiencies in the code:
