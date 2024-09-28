@@ -3,6 +3,9 @@
 A script that finds the brightest pixel on the webcam's input, then generates a corresponding MIDI note to be sent to a DAW to make sound.
 This project was done for the McGill MAT minor course "Fundamentals of New Media".
 
+To run this code, you need to have loopMIDI installed and a port opened. LoopMIDI acts as virtual MIDI port, allowing your IDE to send MIDI
+messages to your DAW. Set loopMIDI as your DAW's MIDI input.
+
 Below are selected parts from the report submitted with the project.
 
 ## Introduction
